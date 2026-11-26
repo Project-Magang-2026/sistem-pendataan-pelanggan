@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Pemasangan Baru</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Remix Icon (Icon CSS) -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <!-- Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <main class="container">
+        <!-- Header -->
+        <header class="form-header">
+            <div class="badge-top">
+                <i class="ri-wifi-line"></i> Registrasi Layanan
+            </div>
+            <h1>Pendaftaran Pelanggan Baru</h1>
+            <p>Isi data di bawah ini untuk menjadwalkan instalasi di lokasi Anda.</p>
+        </header>
+
+        <!-- Card Form Pendaftaran -->
+        <section id="form-section" class="card">
+            <form id="registration-form" novalidate>
+
+                <!-- 1. Nama Lengkap -->
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap</label>
+                    <div class="input-box">
+                        <i class="ri-user-3-line input-icon"></i>
+                        <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap sesuai KTP"
+                            autocomplete="name" required>
+                    </div>
+                </div>
+
+                <!-- 2. No HP (12 Digit Indonesia) -->
+                <div class="form-group">
+                    <label for="no_hp">No. HP / WhatsApp (12 Digit)</label>
+                    <div class="input-box">
+                        <i class="ri-whatsapp-line input-icon"></i>
+                        <input type="tel" id="no_hp" name="no_hp" placeholder="Contoh: 081234567890" inputmode="numeric"
+                            maxlength="12" minlength="12" pattern="08[0-9]{10}" autocomplete="tel" required>
+                    </div>
+                </div>
+
+                <!-- 3. Titik Lokasi (Peta Satelit) & Alamat Otomatis -->
+                <div class="form-group">
+                    <div class="label-row">
+                        <label for="alamat">Titik Lokasi & Alamat</label>
+                        <button type="button" id="btn-lokasi" class="btn-gps">
+                            <i class="ri-crosshair-2-line"></i> Lokasi Saya (GPS)
+                        </button>
+                    </div>
+
+                    <!-- Peta Citra Satelit Interaktif -->
+                    <div class="map-wrapper">
+                        <div id="map"></div>
+                        <div class="map-toolbar">
+                            <span id="koordinat-text"><i class="ri-drag-move-2-line"></i> Klik atau geser pin ke atap
+                                rumah</span>
+                            <a href="https://www.google.com/maps" target="_blank" id="link-buka-gmaps"
+                                class="btn-open-gmaps">
+                                Buka Maps <i class="ri-external-link-line"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Alamat Wilayah Otomatis dari Titik Peta -->
+                    <div class="input-box textarea-box" style="margin-top: 10px;">
+                        <i class="ri-map-pin-range-line input-icon"></i>
+                        <textarea id="alamat" name="alamat" rows="2" spellcheck="false"
+                            placeholder="Alamat wilayah otomatis terisi saat titik dipilih..." required></textarea>
+                    </div>
+
+                    <!-- Detail Tambahan Alamat -->
+                    <div class="input-box" style="margin-top: 10px;">
+                        <i class="ri-home-4-line input-icon"></i>
+                        <input type="text" id="detail_alamat" name="detail_alamat"
+                            placeholder="Detail alamat: No. rumah, RT/RW, gang, atau patokan..." required>
+                    </div>
+
+                    <input type="hidden" id="koordinat" name="koordinat" value="-6.118500, 106.183500">
+                </div>
+
+                <!-- 4. Paket -->
+                <div class="form-group">
+                    <label for="paket">Pilihan Paket</label>
+                    <div class="input-box">
+                        <i class="ri-speed-up-line input-icon"></i>
+                        <select id="paket" name="paket" required>
+                            <option value="" disabled selected>-- Pilih paket layanan --</option>
+                            <option value="10 Mbps - Rp 150.000/bln">Paket Hemat - 10 Mbps (Rp 150.000/bln)</option>
+                            <option value="20 Mbps - Rp 220.000/bln">Paket Keluarga - 20 Mbps (Rp 220.000/bln)</option>
+                            <option value="50 Mbps - Rp 350.000/bln">Paket Kencang - 50 Mbps (Rp 350.000/bln)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tombol Submit -->
+                <button type="submit" id="btn-submit" class="btn-primary">
+                    <i class="ri-send-plane-fill"></i> Kirim Pendaftaran
+                </button>
+            </form>
+
+            <div class="form-footer">
+                Sudah pernah mendaftar? <a href="status.html">Cek status instalasi <i
+                        class="ri-arrow-right-line"></i></a>
+            </div>
+        </section>
+
+        <!-- Card Sukses -->
+        <section id="success-section" class="card success-card hidden">
+            <div class="success-icon">
+                <i class="ri-check-line"></i>
+            </div>
+            <h2>Pendaftaran Berhasil!</h2>
+            <p>Data Anda telah masuk ke sistem kami dengan status <strong>Menunggu Jadwal</strong>.</p>
+
+            <div class="reg-box">
+                <span>ID Registrasi Anda</span>
+                <strong id="display-reg-id">REG-20261125</strong>
+            </div>
+
+            <a href="status.html" class="btn-primary">Pantau Status Pemasangan</a>
+        </section>
+    </main>
+
+    <!-- Leaflet.js Script -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Logika Form & Peta Pelanggan -->
+    <script src="js/form-pelanggan.js"></script>
+</body>
+
+</html>
